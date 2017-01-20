@@ -12,6 +12,7 @@ public class Buoy : MonoBehaviour {
     private void Awake()
     {
         text = GetComponentInChildren<TextMesh>();
+        myCollider = GetComponent<Collider>();
     }
 
     // Use this for initialization
@@ -23,6 +24,18 @@ public class Buoy : MonoBehaviour {
     {
         input = key;
         text.text = "" +input.character;
+
+        GetComponentInChildren<Animal>().IsDrifting = false;
+
+        Collider[] cols = GetComponentsInChildren<Collider>();
+
+        foreach(Collider col in cols)
+        {
+            if(col!= myCollider)
+            {
+                col.enabled = false;
+            }
+        }
     }
     	
 	// Update is called once per frame
@@ -40,6 +53,7 @@ public class Buoy : MonoBehaviour {
         transform.position = Vector3.MoveTowards( transform.position, ship.position, step );
     }
 
+    private Collider myCollider;
     private Transform ship;
     private TextMesh text;
 }
