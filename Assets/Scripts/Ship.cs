@@ -8,6 +8,10 @@ public class Ship : MonoBehaviour {
 
     List<AnimalInfo> savedAnimals = new List<AnimalInfo>();
 
+    AnimalInfo lastAnimal = null;
+
+    public int nbAnimalSaved = 0;
+
     private void Awake()
     {
         instance = this;
@@ -67,14 +71,19 @@ public class Ship : MonoBehaviour {
     void LaunchBuoy(Transform animal)
     {
         Buoy buoy = Instantiate( Resources.Load( "Prefab/Buoy", typeof( Buoy ) ),animal.position , Quaternion.identity ) as Buoy;
+        Vector3 originalRotation = buoy.GetComponentInChildren<TextMesh>().transform.eulerAngles;
+
         buoy.transform.LookAt( transform );
+
+        buoy.GetComponentInChildren<TextMesh>().transform.eulerAngles = originalRotation;
+
         InputKey key = allAvailableKeys[ Random.Range( 0, allAvailableKeys.Count ) ];
         allAvailableKeys.Remove( key );
         buoy.Initialize( key );
-        animal.parent = buoy.transform;
+        animal.parent.parent = buoy.transform;
     }
 
-    private void OnCollisionEnter( Collision collision )
+    private void OnTriggerEnter( Collider collision )
     {
         Debug.Log( "A" );
         if (collision.transform.tag == "Buoy")
@@ -83,6 +92,21 @@ public class Ship : MonoBehaviour {
             //Add Point or Add Animal on Ship
             InputKey key = collision.transform.GetComponent<Buoy>().input;
             allAvailableKeys.Add( key );
+
+            AnimalInfo info = collision.GetComponentInChildren<Animal>().animalInfo;
+
+            if (lastAnimal != null)
+            {
+                savedAnimals.Add(AnimalManager.instance.MixAnimals(lastAnimal, info));
+                lastAnimal = null;
+            }
+            else
+            {
+                lastAnimal = info;
+            }
+
+            nbAnimalSaved++;
+
             Destroy( collision.gameObject );
         }
     }
