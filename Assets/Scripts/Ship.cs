@@ -57,6 +57,11 @@ public class Ship : MonoBehaviour {
 
     void SeekAnimal()
     {
+        if(allAvailableKeys.Count <= 0)
+        {
+            return;
+        }
+
         Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
         RaycastHit hit;
         if ( Physics.Raycast( ray, out hit ) )
@@ -79,16 +84,14 @@ public class Ship : MonoBehaviour {
 
         InputKey key = allAvailableKeys[ Random.Range( 0, allAvailableKeys.Count ) ];
         allAvailableKeys.Remove( key );
-        buoy.Initialize( key );
         animal.parent.parent = buoy.transform;
+        buoy.Initialize( key );
     }
 
     private void OnTriggerEnter( Collider collision )
     {
-        Debug.Log( "A" );
         if (collision.transform.tag == "Buoy")
         {
-            Debug.Log( "B" );
             //Add Point or Add Animal on Ship
             InputKey key = collision.transform.GetComponent<Buoy>().input;
             allAvailableKeys.Add( key );
