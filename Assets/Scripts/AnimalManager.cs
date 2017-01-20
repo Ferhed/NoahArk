@@ -14,7 +14,13 @@ public class AnimalManager : MonoBehaviour {
     {
         instance = this;
     }
-    
+
+    private void Start()
+    {
+        GenerateAnimal(Vector3.zero, gameInfos.currentAnimals[0]);
+        GenerateAnimal(new Vector3(0,0,5), gameInfos.currentAnimals[1]);
+    }
+
     public void GenerateAnimal(Vector3 position)
     {
         int animalIndex = Random.Range(0, gameInfos.currentAnimals.Count);
