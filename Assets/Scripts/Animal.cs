@@ -6,6 +6,8 @@ public class Animal : MonoBehaviour
 {
     public AnimalInfo animalInfo;
     public float speed = 10.0f;
+    public Vector3 direction;
+    public Vector3 endPosition;
 
     private void Awake()
     {
@@ -16,7 +18,12 @@ public class Animal : MonoBehaviour
     {
         if(IsDrifting)
         {
-            transform.position = transform.position + Vector3.right * Time.deltaTime * speed;
+            if ( Vector3.Distance( transform.position, endPosition ) < 1 )
+            {
+                Destroy( gameObject );
+            }
+
+            transform.position = transform.position + direction * Time.deltaTime * speed;
         }
     }
 
