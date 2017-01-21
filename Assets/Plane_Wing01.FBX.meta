@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: b9aa12de88b8d0c4aa549feb97fcb295
-timeCreated: 1485021094
+guid: 77498e48d43fe3f43b72e5b6b75673ba
+timeCreated: 1485021269
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: SM_Plane_Body
+    4300000: SM_Plane_Wings
     9500000: //RootNode
   materials:
     importMaterials: 1
