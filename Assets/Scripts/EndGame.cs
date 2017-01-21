@@ -11,6 +11,8 @@ public class EndGame : MonoBehaviour
     public Transform momPos;
     public Transform childPos;
 
+    public TextMesh childName;
+
     private void Start()
     {
         StartCoroutine(ShowNewAnimals());
@@ -58,7 +60,17 @@ public class EndGame : MonoBehaviour
 
                 child.transform.localScale = Vector3.zero;
 
-                child.transform.DOScale(Vector3.one, 1f);
+                string completeName = "";
+                foreach(string sylab in childInfo.name)
+                {
+                    completeName += sylab;
+                }
+                
+                childName.transform.localScale = Vector3.zero;
+                childName.text = completeName;
+                childName.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic);
+
+                child.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic);
                 child.transform.DORotate(new Vector3(0, -90, 0),0.5f);
                 yield return new WaitForSeconds(.5f);
                 child.transform.DORotate(new Vector3(0, 90, 0), 0.5f);
@@ -74,6 +86,7 @@ public class EndGame : MonoBehaviour
             }
 
             yield return new WaitForSeconds(2f);
+            childName.text = "";
         }
 
         yield return new WaitForSeconds(10f);
