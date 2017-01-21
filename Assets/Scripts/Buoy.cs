@@ -12,6 +12,8 @@ public class Buoy : MonoBehaviour {
     public AnimationCurve heightCurve;
     public float LaunchHeight;
 
+    public GameObject splashFx;
+
     private void Awake()
     {
         text = GetComponentInChildren<TextMesh>();
@@ -48,6 +50,9 @@ public class Buoy : MonoBehaviour {
             .Join(transform.DOScale(sc*radius*2,1.0f))
             .AppendCallback( () =>
             {
+                GameObject splash = Instantiate(splashFx, transform.position, Quaternion.identity) as GameObject;
+                Destroy(splash, 5f);
+                splash.GetComponent<ParticleSystem>().Play();
                 associatedAnimal.transform.parent = transform;
                 isReady = true;
                 text.text = "" + input.character;
