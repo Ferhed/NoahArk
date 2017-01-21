@@ -13,6 +13,8 @@ public class EndGame : MonoBehaviour
 
     public TextMesh childName;
 
+    public GameObject fusionFx;
+
     private void Start()
     {
         StartCoroutine(ShowNewAnimals());
@@ -44,6 +46,9 @@ public class EndGame : MonoBehaviour
 
                 yield return new WaitForSeconds(1f);
 
+                mom.transform.DOPunchScale(mom.transform.right, 2f);
+                dad.transform.DOPunchScale(-dad.transform.right, 2f);
+
                 while (Vector3.Distance(dad.transform.position,childPos.position) >= .1f)
                 {
                     mom.transform.position = Vector3.MoveTowards(mom.transform.position, childPos.position, Time.deltaTime * 10);
@@ -53,6 +58,11 @@ public class EndGame : MonoBehaviour
 
                 Destroy(mom);
                 Destroy(dad);
+
+                GameObject fx = Instantiate(fusionFx, childPos.position, Quaternion.identity) as GameObject;
+                Destroy(fx, 5f);
+
+                yield return new WaitForSeconds(2.5f); 
 
                 GameObject child = AnimalManager.instance.GenerateAnimal(childPos.position, childInfo);
                 child.GetComponent<Animal>().IsDrifting = false;
