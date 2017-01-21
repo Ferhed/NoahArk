@@ -94,7 +94,7 @@ public class AnimalSpawnerManager : MonoBehaviour {
 
         float XValue = Random.Range(offSetXToSpawn , -offSetXToSpawn); 
 
-        return new Vector3( offSetXToSpawn, 0, ZValue );
+        return new Vector3( XValue, 0, ZValue );
     }
 
     private AnimalManager animalManager;

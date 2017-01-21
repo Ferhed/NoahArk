@@ -9,7 +9,7 @@ public class UFO : MonoBehaviour {
 
     private void Awake()
     {
-        collider = GetComponent<Collider>();
+        col = GetComponent<Collider>();
     }
 
     public void Initialize(Animal animal)
@@ -34,7 +34,7 @@ public class UFO : MonoBehaviour {
 
     void ActiveCapture(bool Active)
     {
-        collider.enabled = Active;
+        col.enabled = Active;
     }
 
     private void OnTriggerEnter( Collider other )
@@ -57,5 +57,5 @@ public class UFO : MonoBehaviour {
 
     Vector3 initialPosition;
     Vector3 targetPosition;
-    Collider collider;
+    Collider col;
 }
