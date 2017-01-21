@@ -85,14 +85,17 @@ public class Buoy : MonoBehaviour {
 
         float step = (speed * Time.deltaTime) / ( weight / weightDivisor );
         transform.position = Vector3.MoveTowards( transform.position, ship.position, step );
+
+        text.transform.DOShakePosition(0.5f, 0.1f);
+
+        Vector3[] tab = { new Vector3(0, 0, 0), new Vector3(0, 0, 0) };
     }
 
     bool CanMove()
     {
         return isReady;
     }
-
-
+    
     private bool isReady = false;
     private Collider myCollider;
     private Transform ship;
