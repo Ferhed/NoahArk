@@ -52,7 +52,7 @@ public class AnimalSpawnerManager : MonoBehaviour {
         }
 
         UFO ufo = Instantiate( Resources.Load( "Prefab/UFO", typeof( UFO )) , GetInvaderSpawnPosition(), Quaternion.identity ) as UFO;
-        ufo.Initialize(FoundAnimalToCatch());
+        ufo.Initialize();
 
         Invoke( "InvokeAnInvader", Random.Range( UFOMinInvokeTime, UFOMaxInvokeTime ) );
     }
@@ -76,7 +76,7 @@ public class AnimalSpawnerManager : MonoBehaviour {
         {
             XStart = -offSetXToSpawn;
             ZStart = Random.Range( offSetZToSpawn, -offSetZToSpawn );
-            XEnd = offSetZToSpawn;
+            XEnd = offSetXToSpawn;
             ZEnd = Random.Range( offSetZToSpawn, -offSetZToSpawn );
         }
         else if ( rand < 0.75 )
@@ -97,30 +97,6 @@ public class AnimalSpawnerManager : MonoBehaviour {
         return new Vector3[]{  new Vector3( XStart, 0, ZStart ),new Vector3( XEnd, 0, ZEnd )};
     }
 
-    private Animal FoundAnimalToCatch()
-    {
-        List<Animal> animals = new List<Animal>(FindObjectsOfType( typeof( Animal ) ) as Animal[]);
-        for(int i = animals.Count; i > 0; i-- )
-        {
-            Animal animal = animals[ i-1 ];
-
-            if(!animal.IsDrifting
-                || animal.transform.position.x > 0
-                )
-            {
-                animals.Remove( animal );
-            }
-        }
-
-        if(animals.Count <= 0)
-        {
-            return null;
-        }
-        else
-        {
-            return animals[ Random.Range( 0, animals.Count-1 ) ];
-        }
-    }
 
     private Vector3 GetInvaderSpawnPosition()
     {
