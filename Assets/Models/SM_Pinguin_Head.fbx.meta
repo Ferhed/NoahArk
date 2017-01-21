@@ -10,7 +10,9 @@ ModelImporter:
     400000: SM_Pinguin_Head
     400002: //RootNode
     2300000: SM_Pinguin_Head
+    2300002: //RootNode
     3300000: SM_Pinguin_Head
+    3300002: //RootNode
     4300000: SM_Pinguin_Head
     9500000: //RootNode
   materials:

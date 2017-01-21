@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 46284222515cfd74fbc7bf4955968c20
-timeCreated: 1485017715
+guid: 2c6bb1332e7e114419a3def5ae8f700b
+timeCreated: 1485034979
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -9,8 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: SM_Plane_Body
-    9500000: //RootNode
+    4300000: Herisson_Head
   materials:
     importMaterials: 1
     materialName: 0
@@ -73,7 +72,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

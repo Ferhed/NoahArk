@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: da338169bbbea9a4fb5835161e04fefe
-timeCreated: 1485017715
+guid: 89543f1fbba74b44089be6d346ccb0da
+timeCreated: 1485034981
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -9,8 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: SM_Plane_Head
-    9500000: //RootNode
+    4300000: Loco_head
   materials:
     importMaterials: 1
     materialName: 0
@@ -73,7 +72,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

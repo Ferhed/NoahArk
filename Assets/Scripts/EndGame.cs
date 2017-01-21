@@ -15,9 +15,24 @@ public class EndGame : MonoBehaviour
 
     public GameObject fusionFx;
 
+    public float rotationSpeed = 5.0f;
+
+    private bool canContinue = true;
+
     private void Start()
     {
         StartCoroutine(ShowNewAnimals());
+    }
+
+    private void Update()
+    {
+        if(!canContinue)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                canContinue = true;
+            }
+        }
     }
 
     IEnumerator ShowNewAnimals()
@@ -80,22 +95,30 @@ public class EndGame : MonoBehaviour
                 childName.text = completeName;
                 childName.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic);
 
-                child.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic);
-                child.transform.DORotate(new Vector3(0, -90, 0),0.5f);
+                child.transform.DOScale(Vector3.one * 5.0f, 1f).SetEase(Ease.OutElastic);
+
+                canContinue = false;
+
+                while(!canContinue)
+                {
+                    child.transform.Rotate(new Vector3(0, rotationSpeed * Time.deltaTime, 0));
+                    yield return new WaitForEndOfFrame();
+                }
+
+                /*child.transform.DORotate(new Vector3(0, -90, 0),0.5f);
                 yield return new WaitForSeconds(.5f);
                 child.transform.DORotate(new Vector3(0, 90, 0), 0.5f);
-                yield return new WaitForSeconds(.5f);
-                Destroy(child, 2f);
+                yield return new WaitForSeconds(.5f);*/
+                Destroy(child);
             }
             else
             {
                 GameObject remy = AnimalManager.instance.GenerateAnimal(childPos.position, savedAnimals[i]);
                 remy.GetComponent<Animal>().IsDrifting = false;
                 remy.transform.eulerAngles = new Vector3(0, 90, 0);
-                Destroy(remy, 2f);
+                Destroy(remy,2.0f);
             }
-
-            yield return new WaitForSeconds(2f);
+            
             childName.text = "";
         }
 

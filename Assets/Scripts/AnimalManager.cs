@@ -49,22 +49,7 @@ public class AnimalManager : MonoBehaviour {
 
     public GameObject GenerateAnimal(Vector3 position, Vector3 endPosition, AnimalInfo animalInfo)
     {
-        GameObject animal = null;
-
-        animal = Instantiate(animalPrefab, position, Quaternion.identity) as GameObject;
-
-        GameObject body = Instantiate(Resources.Load("Prefab/Bodies/" + animalInfo.body), position, Quaternion.identity) as GameObject;
-        body.transform.SetParent(animal.transform);
-        GameObject head = Instantiate(Resources.Load("Prefab/Heads/" + animalInfo.head), body.GetComponent<BodyPartsPosition>().headPosition.position, Quaternion.identity) as GameObject;
-        head.transform.SetParent(body.transform);
-        GameObject tail = Instantiate(Resources.Load("Prefab/Tails/" + animalInfo.tail), body.GetComponent<BodyPartsPosition>().tailPosition.position, Quaternion.identity) as GameObject;
-        tail.transform.SetParent(body.transform);
-
-        foreach (Transform t in body.GetComponent<BodyPartsPosition>().otherPositions)
-        {
-            GameObject other = Instantiate(Resources.Load("Prefab/Others/" + animalInfo.other), t.position, Quaternion.identity) as GameObject;
-            other.transform.SetParent(body.transform);
-        }
+        GameObject animal = GenerateAnimal(position, animalInfo);
 
         Animal anim = animal.GetComponent<Animal>();
 
@@ -84,17 +69,31 @@ public class AnimalManager : MonoBehaviour {
         animal = Instantiate( animalPrefab, position, Quaternion.identity ) as GameObject;
 
         GameObject body = Instantiate( Resources.Load( "Prefab/Bodies/" + animalInfo.body ), position, Quaternion.identity ) as GameObject;
+        Vector3 currentScale = body.transform.localScale;
         body.transform.SetParent( animal.transform );
+
         GameObject head = Instantiate( Resources.Load( "Prefab/Heads/" + animalInfo.head ), body.GetComponent<BodyPartsPosition>().headPosition.position, Quaternion.identity ) as GameObject;
         head.transform.SetParent( body.transform );
-        GameObject tail = Instantiate( Resources.Load( "Prefab/Tails/" + animalInfo.tail ), body.GetComponent<BodyPartsPosition>().tailPosition.position, Quaternion.identity ) as GameObject;
-        tail.transform.SetParent( body.transform );
 
-        foreach ( Transform t in body.GetComponent<BodyPartsPosition>().otherPositions )
+        if (animalInfo.tail != "")
         {
-            GameObject other = Instantiate( Resources.Load( "Prefab/Others/" + animalInfo.other ), t.position, Quaternion.identity ) as GameObject;
-            other.transform.SetParent( body.transform );
+            GameObject tail = Instantiate(Resources.Load("Prefab/Tails/" + animalInfo.tail), body.GetComponent<BodyPartsPosition>().tailPosition.position, Quaternion.identity) as GameObject;
+            tail.transform.SetParent(body.transform);
         }
+
+        if (animalInfo.other != "")
+        {
+            GameObject other = Instantiate(Resources.Load("Prefab/Others/" + animalInfo.other), body.GetComponent<BodyPartsPosition>().otherPositions[0].position, Quaternion.identity) as GameObject;
+            other.transform.SetParent(body.transform);
+
+            other = Instantiate(Resources.Load("Prefab/Others/" + animalInfo.other), body.GetComponent<BodyPartsPosition>().otherPositions[1].position, Quaternion.identity) as GameObject;
+            other.transform.SetParent(body.transform);
+            
+            other.transform.localScale = new Vector3(other.transform.localScale.x, -other.transform.localScale.y, other.transform.localScale.z);
+        }
+
+        body.transform.localScale = currentScale;
+        body.transform.eulerAngles = new Vector3(-90, 0, 0);
 
         animal.GetComponent<Animal>().animalInfo = animalInfo;
         
@@ -105,23 +104,76 @@ public class AnimalManager : MonoBehaviour {
     {
         AnimalInfo res = new AnimalInfo();
 
-        res.body = Random.Range(0f, 1f) > 0.5f ? animal1.body : animal2.body;
-        res.head = Random.Range(0f, 1f) > 0.5f ? animal1.head : animal2.head;
-        res.tail = Random.Range(0f, 1f) > 0.5f ? animal1.tail : animal2.tail;
-        res.other = Random.Range(0f, 1f) > 0.5f ? animal1.other : animal2.other;
+        float equilibrator = .4f;
+
+        if(Random.Range(0f, 0.8f) < equilibrator)
+        {
+            equilibrator = Mathf.Max(0, equilibrator - 0.2f);
+            res.other = animal1.other;
+        }
+        else
+        {
+            equilibrator = Mathf.Min(0.8f, equilibrator + 0.2f);
+            res.other = animal2.other;
+        }
+        if (Random.Range(0f, 0.8f) < equilibrator)
+        {
+            equilibrator = Mathf.Max(0, equilibrator - 0.2f);
+            res.body = animal1.body;
+        }
+        else
+        {
+            equilibrator = Mathf.Min(0.8f, equilibrator + 0.2f);
+            res.body = animal2.body;
+        }
+        if (Random.Range(0f, 0.8f) < equilibrator)
+        {
+            equilibrator = Mathf.Max(0, equilibrator - 0.2f);
+            res.tail = animal1.tail;
+        }
+        else
+        {
+            equilibrator = Mathf.Min(0.8f, equilibrator + 0.2f);
+            res.tail = animal2.tail;
+        }
+        if (Random.Range(0f, 0.8f) < equilibrator)
+        {
+            equilibrator = Mathf.Max(0, equilibrator - 0.2f);
+            res.head = animal1.head;
+        }
+        else
+        {
+            equilibrator = Mathf.Min(0.8f, equilibrator + 0.2f);
+            res.head = animal2.head;
+        }
+
 
         res.weight = Random.Range(animal1.weight, animal2.weight) + Random.Range(0, 50);
 
         res.name = new List<string>();
-        
-        for(int i = 0; i < animal1.name.Count/2; i++)
-        {
-            res.name.Add(animal1.name[i]);
-        }
 
-        for (int i = animal2.name.Count/2; i < animal2.name.Count; i++)
+        float nbSyllabe = Mathf.Max(animal1.name.Count , animal2.name.Count) ;
+
+        res.name.Add(animal1.name[0]);
+        res.name.Add(animal2.name[1]);
+
+        for(int i = 2; i<nbSyllabe; i++)
         {
-            res.name.Add(animal2.name[i]);
+            if(Random.value < 0.5f )
+            {
+               if( animal1.name.Count > i)
+                {
+                    res.name.Add( animal1.name[i]);
+                }
+            } 
+            else
+            {
+
+                if (animal2.name.Count > i)
+                {
+                    res.name.Add(animal2.name[i]);
+                }
+            }
         }
 
         return res;

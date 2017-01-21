@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: e54dac2ad8e27ce4fb2f6db906a76601
-timeCreated: 1485017715
+guid: 31e3d6be532e5e44aacf63eb85195b23
+timeCreated: 1485034979
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -9,8 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: SP_Plane_Tail
-    9500000: //RootNode
+    4300000: Autruche_wingL
   materials:
     importMaterials: 1
     materialName: 0
@@ -73,7 +72,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
