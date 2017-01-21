@@ -36,7 +36,6 @@ public class AnimalManager : MonoBehaviour {
     public void Init()
     {
         savedAnimals.Clear();
-        ResetAnimals();
     }
 
     public GameObject GenerateAnimal(Vector3 position)
