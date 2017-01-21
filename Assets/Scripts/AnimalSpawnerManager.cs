@@ -34,14 +34,41 @@ public class AnimalSpawnerManager : MonoBehaviour {
             return;
         }
 
-        animalManager.GenerateAnimal( GetSpawnPosition() );
+        animalManager.GenerateAnimal( GetAnimalSpawnPosition() );
 
         Invoke( "InvokeAPoorPuppy", Random.Range( MinInvokeTime, MaxInvokeTime ) );
     }
 
-    private Vector3 GetSpawnPosition()
+    private void InvokeAnInvader()
+    {
+        if ( !CanInvoke )
+        {
+            return;
+        }
+
+        UFO ufo = Instantiate( Resources.Load( "Prefab/UFO", typeof( UFO )) , GetInvaderSpawnPosition(), Quaternion.identity ) as UFO;
+        ufo.Initialize(FoundAnimalToCatch());
+
+        Invoke( "InvokeAnInvader", Random.Range( MinInvokeTime, MaxInvokeTime ) );
+    }
+
+    private Vector3 GetAnimalSpawnPosition()
     {
         float ZValue = Random.value < 0.5f ? Random.Range( -offSetZToSpawn, -offSetZNearlyShip ) : Random.Range( offSetZToSpawn, offSetZNearlyShip );
+
+        return new Vector3( offSetXToSpawn, 0, ZValue );
+    }
+
+    private Animal FoundAnimalToCatch()
+    {
+        return null;
+    }
+
+    private Vector3 GetInvaderSpawnPosition()
+    {
+        float ZValue = Random.value < 0.5f ? Random.Range( -offSetZToSpawn, -offSetZNearlyShip ) : Random.Range( offSetZToSpawn, offSetZNearlyShip );
+
+        float XValue = Random.Range(offSetXToSpawn , -offSetXToSpawn); 
 
         return new Vector3( offSetXToSpawn, 0, ZValue );
     }
