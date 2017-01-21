@@ -6,6 +6,8 @@ public class AnimalManager : MonoBehaviour {
 
     public GameInfos gameInfos;
 
+    public GameInfos initialGameInfos;
+
     public GameObject animalPrefab;
 
     public static AnimalManager instance;
@@ -80,6 +82,17 @@ public class AnimalManager : MonoBehaviour {
 
     public void SaveAnimals(List<AnimalInfo> newAnimals)
     {
-        gameInfos.currentAnimals = newAnimals;
+        foreach(AnimalInfo info in newAnimals)
+        {
+            if (!gameInfos.currentAnimals.Contains(info))
+            {
+                gameInfos.currentAnimals.Add(info);
+            }
+        }
+    }
+
+    public void ResetAnimals()
+    {
+        gameInfos.currentAnimals = initialGameInfos.currentAnimals;
     }
 }
