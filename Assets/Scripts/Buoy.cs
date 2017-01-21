@@ -47,7 +47,7 @@ public class Buoy : MonoBehaviour {
         DOTween.Sequence()
             .Append( transform.DOMoveX( associatedAnimal.transform.position.x, 1.0f ) )
             .Join( transform.DOMoveZ( associatedAnimal.transform.position.z, 1.0f ) )
-            .Join(transform.DOScale(sc*radius*2,1.0f))
+            .Join(transform.DOScale(sc*radius*2*5,1.0f))
             .AppendCallback( () =>
             {
                 GameObject splash = Instantiate(splashFx, transform.position, Quaternion.identity) as GameObject;
