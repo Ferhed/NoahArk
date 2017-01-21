@@ -14,11 +14,16 @@ public class UFO : MonoBehaviour {
 
     public void Initialize(Animal animal)
     {
+        if(animal == null)
+        {
+            Destroy( gameObject );
+        }
+
         initialPosition = transform.position;
         Prevision = animal.speed / 3.0f;
         Prevision = Random.value < 0.5f ? Prevision + Random.Range( 0, Prevision / 2 ) : Prevision - Random.Range( 0, Prevision / 2 );
         
-        targetPosition = animal.transform.position + Vector3.right * Prevision * animal.speed;
+        targetPosition = animal.transform.position + animal.direction * Prevision * animal.speed;
 
         float newPrevision = Prevision - Random.Range( 0, Prevision / 2 ) ;
 

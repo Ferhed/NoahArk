@@ -38,16 +38,16 @@ public class AnimalManager : MonoBehaviour {
         savedAnimals.Clear();
     }
 
-    public GameObject GenerateAnimal(Vector3 position)
+    public GameObject GenerateAnimal(Vector3 position , Vector3 target)
     {
         int animalIndex = Random.Range(0, gameInfos.currentAnimals.Count);
 
         AnimalInfo animalInfo = gameInfos.currentAnimals[animalIndex];
 
-        return GenerateAnimal(position, animalInfo);
+        return GenerateAnimal(position, target,  animalInfo);
     }
 
-    public GameObject GenerateAnimal(Vector3 position, AnimalInfo animalInfo)
+    public GameObject GenerateAnimal(Vector3 position, Vector3 endPosition, AnimalInfo animalInfo)
     {
         GameObject animal = null;
 
@@ -66,8 +66,38 @@ public class AnimalManager : MonoBehaviour {
             other.transform.SetParent(body.transform);
         }
 
-        animal.GetComponent<Animal>().animalInfo = animalInfo;
+        Animal anim = animal.GetComponent<Animal>();
 
+        anim.animalInfo = animalInfo;
+        anim.direction = (endPosition - position).normalized;
+        anim.endPosition = endPosition;
+
+        animal.transform.rotation = Quaternion.Euler(0,Random.Range(0,360),0);
+
+        return animal;
+    }
+
+    public GameObject GenerateAnimal( Vector3 position, AnimalInfo animalInfo )
+    {
+        GameObject animal = null;
+
+        animal = Instantiate( animalPrefab, position, Quaternion.identity ) as GameObject;
+
+        GameObject body = Instantiate( Resources.Load( "Prefab/Bodies/" + animalInfo.body ), position, Quaternion.identity ) as GameObject;
+        body.transform.SetParent( animal.transform );
+        GameObject head = Instantiate( Resources.Load( "Prefab/Heads/" + animalInfo.head ), body.GetComponent<BodyPartsPosition>().headPosition.position, Quaternion.identity ) as GameObject;
+        head.transform.SetParent( body.transform );
+        GameObject tail = Instantiate( Resources.Load( "Prefab/Tails/" + animalInfo.tail ), body.GetComponent<BodyPartsPosition>().tailPosition.position, Quaternion.identity ) as GameObject;
+        tail.transform.SetParent( body.transform );
+
+        foreach ( Transform t in body.GetComponent<BodyPartsPosition>().otherPositions )
+        {
+            GameObject other = Instantiate( Resources.Load( "Prefab/Others/" + animalInfo.other ), t.position, Quaternion.identity ) as GameObject;
+            other.transform.SetParent( body.transform );
+        }
+
+        animal.GetComponent<Animal>().animalInfo = animalInfo;
+        
         return animal;
     }
 

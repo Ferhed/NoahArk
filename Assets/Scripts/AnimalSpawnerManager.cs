@@ -8,7 +8,6 @@ public class AnimalSpawnerManager : MonoBehaviour {
 
     public float offSetXToSpawn = -40.0f;
     public float offSetZToSpawn = 15.0f;
-    public float offSetZNearlyShip = 2.0f;
 
     public bool CanInvoke = true;
 
@@ -38,7 +37,9 @@ public class AnimalSpawnerManager : MonoBehaviour {
             return;
         }
 
-        animalManager.GenerateAnimal( GetAnimalSpawnPosition() );
+        Vector3[] poss = GetAnimalSpawnPosition();
+
+        animalManager.GenerateAnimal( poss[0], poss[1] );
 
         Invoke( "InvokeAPoorPuppy", Random.Range( AnimalMinInvokeTime, AnimalMaxInvokeTime ) );
     }
@@ -56,11 +57,44 @@ public class AnimalSpawnerManager : MonoBehaviour {
         Invoke( "InvokeAnInvader", Random.Range( UFOMinInvokeTime, UFOMaxInvokeTime ) );
     }
 
-    private Vector3 GetAnimalSpawnPosition()
+    private Vector3[] GetAnimalSpawnPosition()
     {
-        float ZValue = Random.value < 0.5f ? Random.Range( -offSetZToSpawn, -offSetZNearlyShip ) : Random.Range( offSetZToSpawn, offSetZNearlyShip );
+        float XStart = 0;
+        float ZStart = 0;
+        float XEnd = 0;
+        float ZEnd = 0;
 
-        return new Vector3( offSetXToSpawn, 0, ZValue );
+        float rand = Random.value;
+        if ( rand < 0.25f )
+        {
+            XStart = offSetXToSpawn;
+            ZStart = Random.Range(offSetZToSpawn, -offSetZToSpawn);
+            XEnd = -offSetXToSpawn;
+            ZEnd = Random.Range( offSetZToSpawn, -offSetZToSpawn );
+        }
+        else if ( rand < 0.50f )
+        {
+            XStart = -offSetXToSpawn;
+            ZStart = Random.Range( offSetZToSpawn, -offSetZToSpawn );
+            XEnd = offSetZToSpawn;
+            ZEnd = Random.Range( offSetZToSpawn, -offSetZToSpawn );
+        }
+        else if ( rand < 0.75 )
+        {
+            ZStart = offSetZToSpawn;
+            XStart = Random.Range( offSetXToSpawn, -offSetXToSpawn );
+            ZEnd = -offSetZToSpawn;
+            XEnd = Random.Range( offSetXToSpawn, -offSetXToSpawn );
+        }
+        else
+        {
+            ZStart = -offSetZToSpawn;
+            XStart = Random.Range( offSetXToSpawn, -offSetXToSpawn );
+            ZEnd = offSetZToSpawn;
+            XEnd = Random.Range( offSetXToSpawn, -offSetXToSpawn );
+        }
+        
+        return new Vector3[]{  new Vector3( XStart, 0, ZStart ),new Vector3( XEnd, 0, ZEnd )};
     }
 
     private Animal FoundAnimalToCatch()

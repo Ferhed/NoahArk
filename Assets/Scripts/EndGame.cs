@@ -35,7 +35,7 @@ public class EndGame : MonoBehaviour
 
                 AnimalManager.instance.AddAnimal(childInfo);
 
-                GameObject mom = AnimalManager.instance.GenerateAnimal(momPos.position, savedAnimals[i]);
+                GameObject mom = AnimalManager.instance.GenerateAnimal(momPos.position,  savedAnimals[i]);
                 mom.GetComponent<Animal>().IsDrifting = false;
                 mom.transform.eulerAngles = new Vector3(0, 0, 0);
                 GameObject dad = AnimalManager.instance.GenerateAnimal(dadPos.position, savedAnimals[i+1]);
