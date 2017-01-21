@@ -12,6 +12,12 @@ public class Ship : MonoBehaviour {
 
     public int nbAnimalSaved = 0;
 
+    public float gameDuration = 10f;
+
+    float currentGameDuration = 0f;
+
+    bool isFinished = false;
+
     private void Awake()
     {
         instance = this;
@@ -48,7 +54,15 @@ public class Ship : MonoBehaviour {
         #endregion
     }
 
-    void Update () {
+    void Update ()
+    {
+        currentGameDuration += Time.deltaTime;
+
+        if (currentGameDuration >= gameDuration && !isFinished)
+        {
+            GameEnd();
+        }
+
 		if(Input.GetMouseButtonDown(0))
         {
             SeekAnimal();
@@ -115,6 +129,15 @@ public class Ship : MonoBehaviour {
     }
 
     private List<InputKey> allAvailableKeys;
+
+    public void GameEnd()
+    {
+        isFinished = true;
+
+        AnimalManager.instance.SaveAnimals(savedAnimals);
+
+        Debug.Log("end of the game");
+    }
 }
 
 public class InputKey
