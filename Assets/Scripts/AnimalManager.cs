@@ -9,30 +9,46 @@ public class AnimalManager : MonoBehaviour {
     public GameInfos initialGameInfos;
 
     public GameObject animalPrefab;
+    
+    List<AnimalInfo> savedAnimals = new List<AnimalInfo>();
 
-    public static AnimalManager instance;
+    public static AnimalManager instance = null;
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            instance.Init();
+        }
     }
 
     private void Start()
     {
-        GenerateAnimal(Vector3.zero, gameInfos.currentAnimals[0]);
-        GenerateAnimal(new Vector3(0,0,5), gameInfos.currentAnimals[1]);
+        Init();
     }
 
-    public void GenerateAnimal(Vector3 position)
+    public void Init()
+    {
+        savedAnimals.Clear();
+        ResetAnimals();
+    }
+
+    public GameObject GenerateAnimal(Vector3 position)
     {
         int animalIndex = Random.Range(0, gameInfos.currentAnimals.Count);
 
         AnimalInfo animalInfo = gameInfos.currentAnimals[animalIndex];
 
-        GenerateAnimal(position, animalInfo);
+        return GenerateAnimal(position, animalInfo);
     }
 
-    public void GenerateAnimal(Vector3 position, AnimalInfo animalInfo)
+    public GameObject GenerateAnimal(Vector3 position, AnimalInfo animalInfo)
     {
         GameObject animal = null;
 
@@ -52,6 +68,8 @@ public class AnimalManager : MonoBehaviour {
         }
 
         animal.GetComponent<Animal>().animalInfo = animalInfo;
+
+        return animal;
     }
 
     public AnimalInfo MixAnimals(AnimalInfo animal1, AnimalInfo animal2)
@@ -82,7 +100,12 @@ public class AnimalManager : MonoBehaviour {
 
     public void SaveAnimals(List<AnimalInfo> newAnimals)
     {
-        foreach(AnimalInfo info in newAnimals)
+        savedAnimals = newAnimals;
+    }
+
+    public void AddNewAnimals()
+    {
+        foreach (AnimalInfo info in savedAnimals)
         {
             if (!gameInfos.currentAnimals.Contains(info))
             {
@@ -93,6 +116,20 @@ public class AnimalManager : MonoBehaviour {
 
     public void ResetAnimals()
     {
-        gameInfos.currentAnimals = initialGameInfos.currentAnimals;
+        gameInfos.currentAnimals.Clear();
+        foreach(AnimalInfo info in initialGameInfos.currentAnimals)
+        {
+            gameInfos.currentAnimals.Add(info);
+        }
+    }
+
+    public List<AnimalInfo> GetSavedAnimals()
+    {
+        return savedAnimals;
+    }
+
+    public void AddAnimal(AnimalInfo newAnimal)
+    {
+        savedAnimals.Add(newAnimal);
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Ship : MonoBehaviour {
 
     public static Ship instance;
 
     List<AnimalInfo> savedAnimals = new List<AnimalInfo>();
-
-    AnimalInfo lastAnimal = null;
-
+    
     public int nbAnimalSaved = 0;
 
     public float gameDuration = 10f;
@@ -111,16 +110,8 @@ public class Ship : MonoBehaviour {
             allAvailableKeys.Add( key );
 
             AnimalInfo info = collision.GetComponentInChildren<Animal>().animalInfo;
-
-            if (lastAnimal != null)
-            {
-                savedAnimals.Add(AnimalManager.instance.MixAnimals(lastAnimal, info));
-                lastAnimal = null;
-            }
-            else
-            {
-                lastAnimal = info;
-            }
+            
+            savedAnimals.Add(info);
 
             nbAnimalSaved++;
 
@@ -136,7 +127,7 @@ public class Ship : MonoBehaviour {
 
         AnimalManager.instance.SaveAnimals(savedAnimals);
 
-        Debug.Log("end of the game");
+        SceneManager.LoadScene("EndScene");
     }
 }
 
