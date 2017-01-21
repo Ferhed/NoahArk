@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Buoy : MonoBehaviour {
 
@@ -8,6 +9,8 @@ public class Buoy : MonoBehaviour {
     public int weight = 100;
     public int speed = 1000;
     public int weightDivisor = 4;
+    public AnimationCurve heightCurve;
+    public float LaunchHeight;
 
     private void Awake()
     {
@@ -20,26 +23,47 @@ public class Buoy : MonoBehaviour {
         ship = Ship.instance.transform;
 	}
 
-    public void Initialize(InputKey key)
+    public void Initialize( InputKey key, Animal associatedAnimal )
     {
         input = key;
-        text.text = "" +input.character;
 
-        GetComponentInChildren<Animal>().IsDrifting = false;
+        associatedAnimal.IsDrifting = false;
 
-        Collider[] cols = GetComponentsInChildren<Collider>();
+        Collider[] cols = associatedAnimal.GetComponentsInChildren<Collider>();
 
-        foreach(Collider col in cols)
+        foreach ( Collider col in cols )
         {
-            if(col!= myCollider)
+            if ( col != myCollider )
             {
                 col.enabled = false;
             }
         }
+
+        Vector3 sc = transform.localScale;
+        float radius = associatedAnimal.GetComponentInChildren<SphereCollider>().radius;
+
+        DOTween.Sequence()
+            .Append( transform.DOMoveX( associatedAnimal.transform.position.x, 1.0f ) )
+            .Join( transform.DOMoveZ( associatedAnimal.transform.position.z, 1.0f ) )
+            .Join(transform.DOScale(sc*radius*2,1.0f))
+            .AppendCallback( () =>
+            {
+                associatedAnimal.transform.parent = transform;
+                isReady = true;
+                text.text = "" + input.character;
+                myCollider.enabled = true;
+            } )
+            .Play();
     }
     	
 	// Update is called once per frame
 	void Update () {
+        if(time < 1)
+        {
+            time = Mathf.Min(1.0f, time+Time.deltaTime);
+            transform.position = new Vector3( transform.position.x, heightCurve.Evaluate(time)*LaunchHeight, transform.position.z );
+        }
+
 		if(input != null
             && Input.GetKeyDown(input.key))
         {
@@ -49,11 +73,24 @@ public class Buoy : MonoBehaviour {
 
     void Displacement()
     {
+        if(!CanMove())
+        {
+            return;
+        }
+
         float step = (speed * Time.deltaTime) / ( weight / weightDivisor );
         transform.position = Vector3.MoveTowards( transform.position, ship.position, step );
     }
 
+    bool CanMove()
+    {
+        return isReady;
+    }
+
+
+    private bool isReady = false;
     private Collider myCollider;
     private Transform ship;
     private TextMesh text;
+    private float time = 0;
 }

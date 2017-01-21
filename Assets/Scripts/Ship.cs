@@ -88,7 +88,7 @@ public class Ship : MonoBehaviour {
 
     void LaunchBuoy(Transform animal)
     {
-        Buoy buoy = Instantiate( Resources.Load( "Prefab/Buoy", typeof( Buoy ) ),animal.position , Quaternion.identity ) as Buoy;
+        Buoy buoy = Instantiate( Resources.Load( "Prefab/Buoy", typeof( Buoy ) ),transform.position , Quaternion.identity ) as Buoy;
         Vector3 originalRotation = buoy.GetComponentInChildren<TextMesh>().transform.eulerAngles;
 
         buoy.transform.LookAt( transform );
@@ -97,8 +97,7 @@ public class Ship : MonoBehaviour {
 
         InputKey key = allAvailableKeys[ Random.Range( 0, allAvailableKeys.Count ) ];
         allAvailableKeys.Remove( key );
-        animal.parent.parent = buoy.transform;
-        buoy.Initialize( key );
+        buoy.Initialize( key , animal.GetComponentInParent<Animal>() );
     }
 
     private void OnTriggerEnter( Collider collision )
