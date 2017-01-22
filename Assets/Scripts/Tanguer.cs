@@ -57,7 +57,7 @@ public class Tanguer : MonoBehaviour {
 
     private AnimationCurve UpCurve;
     private AnimationCurve RotateCurve;
-    private float Y;
+    public float Y;
     private float X;
     private float time;
 }

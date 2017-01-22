@@ -61,6 +61,9 @@ public class Buoy : MonoBehaviour {
                 text.transform.SetParent(transform);
 
                 myCollider.enabled = true;
+
+                GetComponent<Tanguer>().Y = transform.position.y;
+                GetComponent<Tanguer>().canUpAndDown = true;
             } )
             .Play();
     }
@@ -70,7 +73,7 @@ public class Buoy : MonoBehaviour {
         if(time < 1)
         {
             time = Mathf.Min(1.0f, time+Time.deltaTime);
-            transform.position = new Vector3( transform.position.x, heightCurve.Evaluate(time)*LaunchHeight, transform.position.z );
+            transform.position = new Vector3( transform.position.x, heightCurve.Evaluate(time)*LaunchHeight+0.5f, transform.position.z );
         }
 
 		if(input != null
