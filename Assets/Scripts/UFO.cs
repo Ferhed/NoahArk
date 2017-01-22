@@ -83,8 +83,8 @@ public class UFO : MonoBehaviour {
             {
                 col.enabled = false;
             }
-            
-            capturedAnimal.GetComponent<Tanguer>().timeScale = 0f;
+
+            GetComponent<AudioSource>().Play();
 
             particleExplosion.Play();
 
