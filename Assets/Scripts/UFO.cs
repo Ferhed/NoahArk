@@ -92,6 +92,8 @@ public class UFO : MonoBehaviour {
                 .AppendInterval(0.75f)
                 .Append( capturedAnimal.transform.DOScale( Vector3.zero, 0.75f ) )
                 .Play();
+
+            col.enabled = false;
         }
     }
 
