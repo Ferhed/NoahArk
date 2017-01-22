@@ -57,9 +57,11 @@ public class EndGame : MonoBehaviour
 
                 GameObject mom = AnimalManager.instance.GenerateAnimal(momPos.position,  savedAnimals[i]);
                 mom.GetComponent<Animal>().IsDrifting = false;
+                mom.GetComponent<Tanguer>().timeScale = 0.0f;
                 mom.transform.eulerAngles = new Vector3(0, 0, 0);
                 GameObject dad = AnimalManager.instance.GenerateAnimal(dadPos.position, savedAnimals[i+1]);
                 dad.GetComponent<Animal>().IsDrifting = false;
+                dad.GetComponent<Tanguer>().timeScale = 0.0f;
                 dad.transform.eulerAngles = new Vector3(0, 180, 0);
 
                 yield return new WaitForSeconds(1f);
@@ -84,6 +86,7 @@ public class EndGame : MonoBehaviour
 
                 GameObject child = AnimalManager.instance.GenerateAnimal(childPos.position, childInfo);
                 child.GetComponent<Animal>().IsDrifting = false;
+                child.GetComponent<Tanguer>().timeScale = 0.0f;
                 child.transform.eulerAngles = new Vector3(0, 90, 0);
 
                 child.transform.localScale = Vector3.zero;

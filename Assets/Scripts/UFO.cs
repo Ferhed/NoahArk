@@ -10,6 +10,7 @@ public class UFO : MonoBehaviour {
     private void Awake()
     {
         col = GetComponent<Collider>();
+        particleExplosion = GetComponentInChildren<ParticleSystem>();
     }
 
     public void Initialize()
@@ -82,14 +83,19 @@ public class UFO : MonoBehaviour {
             {
                 col.enabled = false;
             }
+            
+            capturedAnimal.GetComponent<Tanguer>().timeScale = 0f;
 
-            capturedAnimal.transform.parent = transform;
+            particleExplosion.Play();
 
-            capturedAnimal.transform.DOMove( transform.GetComponentInChildren<MeshRenderer>().transform.position , 1.0f );
-            capturedAnimal.transform.DOScale( Vector3.zero, 1.0f );
+            DOTween.Sequence()
+                .AppendInterval(0.75f)
+                .Append( capturedAnimal.transform.DOScale( Vector3.zero, 0.75f ) )
+                .Play();
         }
     }
 
+    ParticleSystem particleExplosion;
     Vector3 initialPosition;
     Vector3 targetPosition;
     Collider col;
