@@ -89,12 +89,9 @@ public class Ship : MonoBehaviour {
     void LaunchBuoy(Transform animal)
     {
         Buoy buoy = Instantiate( Resources.Load( "Prefab/Buoy", typeof( Buoy ) ),transform.position , Quaternion.identity ) as Buoy;
-        Vector3 originalRotation = buoy.GetComponentInChildren<TextMesh>().transform.eulerAngles;
 
         buoy.transform.LookAt( transform );
-
-        buoy.GetComponentInChildren<TextMesh>().transform.eulerAngles = originalRotation;
-
+      
         InputKey key = allAvailableKeys[ Random.Range( 0, allAvailableKeys.Count ) ];
         allAvailableKeys.Remove( key );
         buoy.Initialize( key , animal.GetComponentInParent<Animal>() );

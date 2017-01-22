@@ -14,9 +14,10 @@ public class Buoy : MonoBehaviour {
 
     public GameObject splashFx;
 
+    public GameObject text;
+
     private void Awake()
     {
-        text = GetComponentInChildren<TextMesh>();
         myCollider = GetComponent<Collider>();
     }
 
@@ -47,7 +48,7 @@ public class Buoy : MonoBehaviour {
         DOTween.Sequence()
             .Append( transform.DOMoveX( associatedAnimal.transform.position.x, 1.0f ) )
             .Join( transform.DOMoveZ( associatedAnimal.transform.position.z, 1.0f ) )
-            .Join(transform.DOScale(sc*radius*2*5,1.0f))
+            .Join(transform.DOScale(sc*radius*2*2,1.0f))
             .AppendCallback( () =>
             {
                 GameObject splash = Instantiate(splashFx, transform.position, Quaternion.identity) as GameObject;
@@ -55,7 +56,13 @@ public class Buoy : MonoBehaviour {
                 splash.GetComponent<ParticleSystem>().Play();
                 associatedAnimal.transform.parent = transform;
                 isReady = true;
-                text.text = "" + input.character;
+
+                text = Instantiate(text, transform.position, Quaternion.identity);
+
+                text.GetComponentInChildren<TextMesh>().text = "" + input.character;
+
+                text.transform.SetParent(transform);
+
                 myCollider.enabled = true;
             } )
             .Play();
@@ -99,6 +106,5 @@ public class Buoy : MonoBehaviour {
     private bool isReady = false;
     private Collider myCollider;
     private Transform ship;
-    private TextMesh text;
     private float time = 0;
 }
