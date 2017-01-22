@@ -19,12 +19,16 @@ public class EndGame : MonoBehaviour
 
     public float rotationSpeed = 10.0f;
 
+    public AudioClip[] applause;
+
     private bool canContinue = true;
+    private AudioSource audioSource;
 
     private void Start()
     {
         StartCoroutine(ShowNewAnimals());
         Sun.localScale = Vector3.zero;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -102,6 +106,9 @@ public class EndGame : MonoBehaviour
 
                 child.transform.DOScale( Vector3.one * 5.0f, 1f ).SetEase( Ease.OutElastic );
                 child.GetComponentInChildren<AudioSource>().Play();
+
+                audioSource.clip = applause[ Random.Range( 0, applause.Length ) ];
+                audioSource.Play();
 
                 canContinue = false;
 
