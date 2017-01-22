@@ -16,6 +16,7 @@ public class Tanguer : MonoBehaviour {
     private void Awake()
     {
         Y = transform.position.y;
+        X = transform.eulerAngles.x;
     }
 
     private void Start()
@@ -41,14 +42,22 @@ public class Tanguer : MonoBehaviour {
 
         if(canTanguer)
         {
-            transform.eulerAngles = new Vector3( -90 + RotateCurve.Evaluate( time ) * InclinaisonStrength,
+            transform.eulerAngles = new Vector3( X + RotateCurve.Evaluate( time ) * InclinaisonStrength,
                 transform.eulerAngles.y,
                 transform.eulerAngles.z );
         }		
 	}
 
+    public void Stop()
+    {
+        timeScale = 0;
+        transform.position = new Vector3( transform.position.x, Y , transform.position.z );
+        transform.eulerAngles = new Vector3( X , transform.eulerAngles.y, transform.eulerAngles.z );
+    }
+
     private AnimationCurve UpCurve;
     private AnimationCurve RotateCurve;
     private float Y;
+    private float X;
     private float time;
 }
