@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 2f4c34ced0bfd3645b87a3a8ccc178b8
+timeCreated: 1485090888
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Rugsnatcher DEMO
+  fontNames:
+  - Rugsnatcher DEMO
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
