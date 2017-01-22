@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Ship : MonoBehaviour {
 
@@ -16,6 +17,8 @@ public class Ship : MonoBehaviour {
     float currentGameDuration = 0f;
 
     bool isFinished = false;
+
+    public Slider waterJauge;
 
     private void Awake()
     {
@@ -56,6 +59,8 @@ public class Ship : MonoBehaviour {
     void Update ()
     {
         currentGameDuration += Time.deltaTime;
+
+        waterJauge.value = 1 - currentGameDuration / gameDuration;
 
         if (currentGameDuration >= gameDuration && !isFinished)
         {
