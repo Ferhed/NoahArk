@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 3a2f86f456b20cc4aa7994473baf9dd4
+timeCreated: 1485043022
+licenseType: Pro
+ShaderImporter:
+  defaultTextures:
+  - _Rainbow: {fileID: 2800000, guid: 2e86f03d58ea13940ae66093a5c92f7c, type: 3}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -11,6 +11,8 @@ public class EndGame : MonoBehaviour
     public Transform momPos;
     public Transform childPos;
 
+    public Transform Sun;
+
     public TextMesh childName;
 
     public GameObject fusionFx;
@@ -22,6 +24,7 @@ public class EndGame : MonoBehaviour
     private void Start()
     {
         StartCoroutine(ShowNewAnimals());
+        Sun.localScale = Vector3.zero;
     }
 
     private void Update()
@@ -95,6 +98,8 @@ public class EndGame : MonoBehaviour
                 childName.text = completeName;
                 childName.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic);
 
+                ActiveSun(true);
+
                 child.transform.DOScale(Vector3.one * 5.0f, 1f).SetEase(Ease.OutElastic);
 
                 canContinue = false;
@@ -109,6 +114,9 @@ public class EndGame : MonoBehaviour
                 yield return new WaitForSeconds(.5f);
                 child.transform.DORotate(new Vector3(0, 90, 0), 0.5f);
                 yield return new WaitForSeconds(.5f);*/
+
+                ActiveSun(false);
+
                 Destroy(child);
             }
             else
@@ -129,6 +137,18 @@ public class EndGame : MonoBehaviour
         AnimalManager.instance.AddNewAnimals();
 
         SceneManager.LoadScene("Menu");
+    }
+
+    private void ActiveSun(bool active)
+    {
+        if(active)
+        {
+            Sun.DOScale(Vector3.one * 3.2f, 1f);
+        }
+        else
+        {
+            Sun.DOScale(Vector3.zero, 1f);
+        }
     }
 	
 }
