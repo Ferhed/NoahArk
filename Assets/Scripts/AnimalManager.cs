@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.UI;
 
 public class AnimalManager : MonoBehaviour {
 
@@ -15,6 +17,8 @@ public class AnimalManager : MonoBehaviour {
     public AnimationCurve UpCurve;
     public AnimationCurve RotateCurve;
 
+    private Image fade;
+
     public static AnimalManager instance = null;
 
     private void Awake()
@@ -26,8 +30,8 @@ public class AnimalManager : MonoBehaviour {
         }
         else
         {
-            Destroy(gameObject);
             instance.Init();
+            Destroy(gameObject);
         }
     }
 
@@ -39,6 +43,17 @@ public class AnimalManager : MonoBehaviour {
     public void Init()
     {
         savedAnimals.Clear();
+        GameObject.FindGameObjectWithTag("Fade").GetComponent<Image>().DOFade(0, 0.5f);
+    }
+
+    public void Unfade()
+    {
+        GameObject.FindGameObjectWithTag("Fade").GetComponent<Image>().DOFade(0, 0.5f);
+    }
+
+    public void FadeScreen()
+    {
+        GameObject.FindGameObjectWithTag("Fade").GetComponent<Image>().DOFade(1, 0.5f);
     }
 
     public GameObject GenerateAnimal(Vector3 position , Vector3 target)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Ship : MonoBehaviour {
 
@@ -128,7 +129,11 @@ public class Ship : MonoBehaviour {
 
         AnimalManager.instance.SaveAnimals(savedAnimals);
 
-        SceneManager.LoadScene("EndScene");
+        DOTween.Sequence()
+            .AppendCallback(() => AnimalManager.instance.FadeScreen())
+            .AppendInterval(0.5f)
+            .AppendCallback(() => SceneManager.LoadScene("EndScene"))
+            .Play();
     }
 }
 

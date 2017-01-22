@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class Menu : MonoBehaviour
 {
@@ -9,7 +10,11 @@ public class Menu : MonoBehaviour
 
     public void BeginGame()
     {
-        SceneManager.LoadScene(playScene);
+        DOTween.Sequence()
+            .AppendCallback(()=>AnimalManager.instance.FadeScreen())
+            .AppendInterval(0.5f)
+            .AppendCallback(()=>SceneManager.LoadScene(playScene))
+            .Play();
     }
 
     public void ResetAnimals()

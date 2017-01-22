@@ -29,6 +29,8 @@ public class EndGame : MonoBehaviour
         StartCoroutine(ShowNewAnimals());
         Sun.localScale = Vector3.zero;
         audioSource = GetComponent<AudioSource>();
+
+        AnimalManager.instance.Unfade();
     }
 
     private void Update()
@@ -143,6 +145,10 @@ public class EndGame : MonoBehaviour
         //End of game
 
         AnimalManager.instance.AddNewAnimals();
+
+        AnimalManager.instance.FadeScreen();
+        
+        yield return new WaitForSeconds(0.5f);
 
         SceneManager.LoadScene("Menu");
     }
