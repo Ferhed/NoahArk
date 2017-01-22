@@ -85,6 +85,8 @@ public class UFO : MonoBehaviour {
 
             capturedAnimal.transform.parent = transform;
 
+            capturedAnimal.GetComponent<Tanguer>().timeScale = 0f;
+
             capturedAnimal.transform.DOMove( transform.GetComponentInChildren<MeshRenderer>().transform.position , 1.0f );
             capturedAnimal.transform.DOScale( Vector3.zero, 1.0f );
         }

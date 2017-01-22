@@ -11,6 +11,9 @@ public class AnimalManager : MonoBehaviour {
     public GameObject animalPrefab;
     
     List<AnimalInfo> savedAnimals = new List<AnimalInfo>();
+    
+    public AnimationCurve UpCurve;
+    public AnimationCurve RotateCurve;
 
     public static AnimalManager instance = null;
 
