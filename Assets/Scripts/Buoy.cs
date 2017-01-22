@@ -11,9 +11,7 @@ public class Buoy : MonoBehaviour {
     public int weightDivisor = 4;
     public AnimationCurve heightCurve;
     public float LaunchHeight;
-
-    public GameObject splashFx;
-
+    
     public GameObject text;
 
     private void Awake()
@@ -51,9 +49,6 @@ public class Buoy : MonoBehaviour {
             .Join(transform.DOScale(sc*radius*2*2,1.0f))
             .AppendCallback( () =>
             {
-                GameObject splash = Instantiate(splashFx, transform.position, Quaternion.identity) as GameObject;
-                Destroy(splash, 5f);
-                splash.GetComponent<ParticleSystem>().Play();
                 associatedAnimal.transform.parent = transform;
                 isReady = true;
 
@@ -66,6 +61,9 @@ public class Buoy : MonoBehaviour {
                 text.transform.SetParent(transform);
 
                 myCollider.enabled = true;
+
+                GetComponent<Tanguer>().Y = transform.position.y;
+                GetComponent<Tanguer>().canUpAndDown = true;
             } )
             .Play();
     }
@@ -75,7 +73,7 @@ public class Buoy : MonoBehaviour {
         if(time < 1)
         {
             time = Mathf.Min(1.0f, time+Time.deltaTime);
-            transform.position = new Vector3( transform.position.x, heightCurve.Evaluate(time)*LaunchHeight, transform.position.z );
+            transform.position = new Vector3( transform.position.x, heightCurve.Evaluate(time)*LaunchHeight+0.5f, transform.position.z );
         }
 
 		if(input != null
