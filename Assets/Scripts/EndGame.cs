@@ -57,11 +57,11 @@ public class EndGame : MonoBehaviour
 
                 GameObject mom = AnimalManager.instance.GenerateAnimal(momPos.position,  savedAnimals[i]);
                 mom.GetComponent<Animal>().IsDrifting = false;
-                mom.GetComponent<Tanguer>().timeScale = 0.0f;
+                mom.GetComponent<Tanguer>().Stop();
                 mom.transform.eulerAngles = new Vector3(0, 0, 0);
                 GameObject dad = AnimalManager.instance.GenerateAnimal(dadPos.position, savedAnimals[i+1]);
                 dad.GetComponent<Animal>().IsDrifting = false;
-                dad.GetComponent<Tanguer>().timeScale = 0.0f;
+                dad.GetComponent<Tanguer>().Stop();
                 dad.transform.eulerAngles = new Vector3(0, 180, 0);
 
                 yield return new WaitForSeconds(1f);
@@ -86,7 +86,7 @@ public class EndGame : MonoBehaviour
 
                 GameObject child = AnimalManager.instance.GenerateAnimal(childPos.position, childInfo);
                 child.GetComponent<Animal>().IsDrifting = false;
-                child.GetComponent<Tanguer>().timeScale = 0.0f;
+                child.GetComponent<Tanguer>().Stop();
                 child.transform.eulerAngles = new Vector3(0, 90, 0);
 
                 child.transform.localScale = Vector3.zero;
@@ -103,7 +103,11 @@ public class EndGame : MonoBehaviour
 
                 ActiveSun(true);
 
-                child.transform.DOScale(Vector3.one * 5.0f, 1f).SetEase(Ease.OutElastic);
+                DOTween.Sequence()
+                    .Append( child.transform.DOScale( Vector3.one * 5.0f, 1f ).SetEase( Ease.OutElastic ) )
+                    .AppendCallback(()=>child.GetComponentInChildren<AudioSource>().Play())
+                    .Play();
+                ;
 
                 canContinue = false;
 
