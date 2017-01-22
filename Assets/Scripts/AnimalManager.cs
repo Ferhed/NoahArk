@@ -151,7 +151,7 @@ public class AnimalManager : MonoBehaviour {
             equilibrator = Mathf.Min(0.8f, equilibrator + 0.2f);
             res.tail = animal2.tail;
         }
-        if ((Random.Range(0f, 0.8f) < equilibrator && animal2.head != "Loco_head") || animal1.head == "Loco_head")
+        if ((Random.Range(0f, 0.8f) < equilibrator && animal2.body != "" && animal1.body!=res.body) || animal1.body == "" || animal2.body == res.body)
         {
             equilibrator = Mathf.Max(0, equilibrator - 0.2f);
             res.head = animal1.head;

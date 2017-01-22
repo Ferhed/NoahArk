@@ -130,8 +130,8 @@ public class EndGame : MonoBehaviour
             childName.text = "";
         }
 
-        yield return new WaitForSeconds(10f);
-
+        yield return null;
+        
         //End of game
 
         AnimalManager.instance.AddNewAnimals();
@@ -143,7 +143,7 @@ public class EndGame : MonoBehaviour
     {
         if(active)
         {
-            Sun.DOScale(Vector3.one, 1f);
+            Sun.DOScale(Vector3.one * 1.2f, 1f);
         }
         else
         {
