@@ -17,7 +17,7 @@ public class EndGame : MonoBehaviour
 
     public GameObject fusionFx;
 
-    public float rotationSpeed = 5.0f;
+    public float rotationSpeed = 10.0f;
 
     private bool canContinue = true;
 
@@ -143,7 +143,7 @@ public class EndGame : MonoBehaviour
     {
         if(active)
         {
-            Sun.DOScale(Vector3.one * 3.2f, 1f);
+            Sun.DOScale(Vector3.one, 1f);
         }
         else
         {

@@ -68,30 +68,45 @@ public class AnimalManager : MonoBehaviour {
 
         animal = Instantiate( animalPrefab, position, Quaternion.identity ) as GameObject;
 
-        GameObject body = Instantiate( Resources.Load( "Prefab/Bodies/" + animalInfo.body ), position, Quaternion.identity ) as GameObject;
-        Vector3 currentScale = body.transform.localScale;
-        body.transform.SetParent( animal.transform );
+        GameObject body;
+        Vector3 currentScale;
 
-        GameObject head = Instantiate( Resources.Load( "Prefab/Heads/" + animalInfo.head ), body.GetComponent<BodyPartsPosition>().headPosition.position, Quaternion.identity ) as GameObject;
-        head.transform.SetParent( body.transform );
-
-        if (animalInfo.tail != "")
+        if (animalInfo.body == "")
         {
-            GameObject tail = Instantiate(Resources.Load("Prefab/Tails/" + animalInfo.tail), body.GetComponent<BodyPartsPosition>().tailPosition.position, Quaternion.identity) as GameObject;
-            tail.transform.SetParent(body.transform);
+            body = Instantiate(Resources.Load("Prefab/Heads/" + animalInfo.head), position, Quaternion.identity) as GameObject;
+            currentScale = body.transform.localScale;
+            body.transform.SetParent(animal.transform);
+            body.tag = "Animal";
+            SphereCollider sC = body.AddComponent<SphereCollider>();
+            sC.radius = 0.8f;
         }
-
-        if (animalInfo.other != "")
+        else
         {
-            GameObject other = Instantiate(Resources.Load("Prefab/Others/" + animalInfo.other), body.GetComponent<BodyPartsPosition>().otherPositions[0].position, Quaternion.identity) as GameObject;
-            other.transform.SetParent(body.transform);
+            body = Instantiate(Resources.Load("Prefab/Bodies/" + animalInfo.body), position, Quaternion.identity) as GameObject;
+            currentScale = body.transform.localScale;
+            body.transform.SetParent(animal.transform);
 
-            other = Instantiate(Resources.Load("Prefab/Others/" + animalInfo.other), body.GetComponent<BodyPartsPosition>().otherPositions[1].position, Quaternion.identity) as GameObject;
-            other.transform.SetParent(body.transform);
-            
-            other.transform.localScale = new Vector3(other.transform.localScale.x, -other.transform.localScale.y, other.transform.localScale.z);
+            GameObject head = Instantiate(Resources.Load("Prefab/Heads/" + animalInfo.head), body.GetComponent<BodyPartsPosition>().headPosition.position, Quaternion.identity) as GameObject;
+            head.transform.SetParent(body.transform);
+
+            if (animalInfo.tail != "")
+            {
+                GameObject tail = Instantiate(Resources.Load("Prefab/Tails/" + animalInfo.tail), body.GetComponent<BodyPartsPosition>().tailPosition.position, Quaternion.identity) as GameObject;
+                tail.transform.SetParent(body.transform);
+            }
+
+            if (animalInfo.other != "")
+            {
+                GameObject other = Instantiate(Resources.Load("Prefab/Others/" + animalInfo.other), body.GetComponent<BodyPartsPosition>().otherPositions[0].position, Quaternion.identity) as GameObject;
+                other.transform.SetParent(body.transform);
+
+                other = Instantiate(Resources.Load("Prefab/Others/" + animalInfo.other), body.GetComponent<BodyPartsPosition>().otherPositions[1].position, Quaternion.identity) as GameObject;
+                other.transform.SetParent(body.transform);
+
+                other.transform.localScale = new Vector3(other.transform.localScale.x, -other.transform.localScale.y, other.transform.localScale.z);
+            }
         }
-
+        
         body.transform.localScale = currentScale;
         body.transform.eulerAngles = new Vector3(-90, 0, 0);
 
@@ -116,7 +131,7 @@ public class AnimalManager : MonoBehaviour {
             equilibrator = Mathf.Min(0.8f, equilibrator + 0.2f);
             res.other = animal2.other;
         }
-        if (Random.Range(0f, 0.8f) < equilibrator)
+        if ((Random.Range(0f, 0.8f) < equilibrator && animal1.body!="") || animal2.body == "")
         {
             equilibrator = Mathf.Max(0, equilibrator - 0.2f);
             res.body = animal1.body;
@@ -136,7 +151,7 @@ public class AnimalManager : MonoBehaviour {
             equilibrator = Mathf.Min(0.8f, equilibrator + 0.2f);
             res.tail = animal2.tail;
         }
-        if (Random.Range(0f, 0.8f) < equilibrator)
+        if ((Random.Range(0f, 0.8f) < equilibrator && animal2.head != "Loco_head") || animal1.head == "Loco_head")
         {
             equilibrator = Mathf.Max(0, equilibrator - 0.2f);
             res.head = animal1.head;
