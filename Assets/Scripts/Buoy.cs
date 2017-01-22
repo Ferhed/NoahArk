@@ -59,8 +59,6 @@ public class Buoy : MonoBehaviour {
 
                 associatedAnimal.GetComponentInChildren<AudioSource>().Play();
 
-                associatedAnimal.GetComponentInChildren<Tanguer>().Stop();
-
                 text = Instantiate(text, transform.position, Quaternion.identity);
 
                 text.GetComponentInChildren<TextMesh>().text = "" + input.character;
